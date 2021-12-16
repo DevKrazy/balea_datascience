@@ -8,26 +8,36 @@
 #
 
 library(shiny)
+library(shinydashboard)
 
-# Define UI for application that draws a histogram
-shinyUI(fluidPage(
-
-    # Application title
-    titlePanel("Old Faithful Geyser Data"),
-
-    # Sidebar with a slider input for number of bins
-    sidebarLayout(
-        sidebarPanel(
-            sliderInput("bins",
-                        "Number of bins:",
-                        min = 1,
-                        max = 50,
-                        value = 30)
-        ),
-
-        # Show a plot of the generated distribution
-        mainPanel(
-            plotOutput("distPlot")
-        )
+dashboardPage(
+  dashboardHeader(
+    title = "Data Science Project"
+  ),
+  dashboardSidebar(
+    sidebarMenu(
+      menuItem("Accueil", tabName = "home", icon = icon("dashboard")),
+      menuItem("Graphiques", tabName = "graphics", icon = icon("th"))
     )
-))
+  ),
+  dashboardBody(
+    tags$head(
+      tags$link(rel = "stylesheet", type = "text/css", href = "style.css")
+    ),
+    
+    tabItems(
+      # First tab content
+      tabItem(tabName = "home",
+        h1("Data Science Project - Balea"),
+        h3("Analyse des balances potentiellement défectueuses des chariots utilisés dans un entrepôt de préparation de commande"),
+        h3("Problématique : Comment identifier de façon automatique les balances potentiellement défectueuses ?")
+        
+      ),
+      
+      # Second tab content
+      tabItem(tabName = "graphics",
+        h2("Some graphics")
+      )
+    )
+  )
+)
