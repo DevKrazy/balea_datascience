@@ -38,7 +38,8 @@ dashboardPage(
       ),
       # Second tab content
       tabItem(tabName = "graphics",
-              h2("Some graphics")
+              h2("Some graphics"),
+              box(plotOutput("firstPlot"))
       )
     )
   )
