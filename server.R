@@ -2,10 +2,10 @@ library(shiny)
 library(ggplot2)
 library(dplyr)
 
-#balea_data <- read.csv2("Data_balea_projetIG4.csv")
+balea_data <- read.csv2("Data_balea_projetIG4.csv")
 balea_data$TheoriticalTotalWeight = as.double(balea_data$Quantity)*as.double(balea_data$WeightProductTradeUnitUsed)
 balea_data$WeightError = abs(as.double(balea_data$Weight)-balea_data$TheoriticalTotalWeight)
-balea_data$TruckCorridorId = 
+balea_data$BalanceId = paste(balea_data$TruckId, balea_data$CorridorNumber)
 
 # average error for each truck
 #print(aggregate(balea_data$WeightError, list(balea_data$TruckId), mean))
