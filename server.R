@@ -32,4 +32,12 @@ shinyServer(function(input, output) {
       xlab("Weight")
   })
   
+  
+  source("analyse_tarages_forcages.R")
+  output$plotq_t <- renderPlot(plot_q_t)
+  output$acp_nb_ind <- renderPlot(acp_nb_aff_ind)
+  output$acp_nb_var <- renderPlot(acp_nb_aff_var)
+  
+  output$acp_ratios_ind <- renderPlot(acp_ratios_aff_ind)
+  output$acp_ratios_var <- renderPlot(acp_ratios_aff_var)
 })
