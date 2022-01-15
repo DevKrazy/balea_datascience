@@ -18,7 +18,8 @@ dashboardPage(
     sidebarMenu(
       menuItem("Accueil", tabName = "home", icon = icon("fas fa-home")),
       menuItem("Graphiques", tabName = "graphics", icon = icon("far fa-chart-bar")),
-      menuItem("Tarages et Forçages", tabName = "tarage_forcage", icon = icon("far fa-chart-bar"))
+      menuItem("Tarages et Forçages", tabName = "tarage_forcage", icon = icon("far fa-chart-bar")),
+      menuItem("Erreur de poids", tabName = "err_poids", icon = icon("far fa-chart-bar"))
     )
   ),
   dashboardBody(
@@ -26,39 +27,43 @@ dashboardPage(
       tags$link(rel = "stylesheet", type = "text/css", href = "style.css")
     ),
     
+    
     tabItems(
       # First tab content
       tabItem(tabName = "home",
         h1("Data Science Project - Balea"),
         h3("Analyse des balances potentiellement défectueuses des chariots utilisés dans un entrepôt de préparation de commande"),
         h3("Problématique : Comment identifier de façon automatique les balances potentiellement défectueuses ?"),
-        box(
+        shinydashboard::box(
           title = "Contexte", solidHeader = TRUE,
           "Balea est une PME languedocienne qui fabrique et développe des chariots connectés de préparation de commandes pour les entrepôts logistiques. Ces chariots utilisent des balances ayant pour but de minimiser les erreurs humaines et favoriser l'exactitude des commandes préparées. Chaque chariot possède plusieurs balances connectées à un système embarqué qui permet d'enregistrer et de contrôler ces poids. Ce système de contrôle permet à Balea d'assurer une grande fiabilité dans la justesse des commandes préparées par les opérateurs. Dans la pratique, il arrive qu’une balance soit défectueuse. Cela engendre des erreurs de mesures de poids et par conséquent des interventions humaines sont nécessaires telles que le tarage manuel des balances ou le forçage de la commande (sans le contrôle de poids) afin de débloquer le tour de préparation de commande."
         )
       ),
+      
+      
       # Second tab content
       tabItem(tabName = "graphics",
         h2("Some graphics"),
-        box(plotOutput("firstPlot"))
+        shinydashboard::box(plotOutput("firstPlot"))
       ),
       
+      # ---- Analyse des nombres de tarages, forçages et utilisation ----#
       tabItem(tabName = "tarage_forcage",
         h2("Analyse des tarages et des forçages"),
         fluidRow(
-          box(width = 12,
+          shinydashboard::box(width = 12,
             column(width = 8,
               h3("Graphique du nombre d’utilisation en fonction du nombre de tarage (Balance n°65)"),
               plotOutput("plotq_t")
             ),
             column(width = 4,
-              h3("Obersavtion"),
+              h3("Observation"),
               "On remarque un profil plutôt linéaire, ce qui laisse présager que la proportion de tarage par rapport au nombre d’utilisation n’évolue pas avec le temps. Dans le cas où une balance deviendrait plus défectueuse avec le temps on aurait observé un profil se rapprochant de la forme d’une courbe exponentielle."
             )
           )
         ),
         fluidRow(
-          box(width = 12,
+          shinydashboard::box(width = 12,
             column(width = 4,
               h3("ACP nombre d’utilisation, nombre de tarage et nombre de forçage"),
               plotOutput("acp_nb_ind"),
@@ -76,7 +81,7 @@ dashboardPage(
           )
         ),
         fluidRow(
-          box(width = 12,
+          shinydashboard::box(width = 12,
             column(width = 4,
                
                    h3("ACP ratio tarage et ratio forcage "),
@@ -92,6 +97,28 @@ dashboardPage(
             column(width = 4,
                  h3("Observation"),
                 "On voit que les 2 ratios sont corrélés (angle 45° donc cos ~ 0,7), pareil que l’ACP du nb d’utilisations, de forçages et de tarages, on ne peut pas en conclure grand chose."
+            )
+          )
+        )
+      ),
+      
+      
+      # ---- Analyse des erreurs de poids des balances ----#
+      tabItem(tabName = "err_poids",
+        h2("Analyse des erreurs de poids des balances"),
+        fluidRow(
+          shinydashboard::box(width = 12,
+            column(width = 4,
+               h3("Graphique du nombre d’utilisation en fonction du nombre de tarage (Balance n°65)"),
+               plotOutput("acp_poids_ind")
+            ),
+            column(width = 4,
+               h3("Variables - PCA"),
+               plotOutput("acp_poids_var")
+            ),
+            column(width = 4,
+               h3("Obersavtion"),
+               "On remarque que le pourcentage d’erreur et le nombre d’utilisation sont non corrélés, on remarque angle pi/2 ⇒ Cos(teta) = 0. Donc notre hypothèse où plus on utiliserai une balance plus cette dernière deviendrait défectueuse est fausse. Donc nous allons pouvoir extraire des profils de balances défectueuses et classifier."
             )
           )
         )

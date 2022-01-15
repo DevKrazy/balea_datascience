@@ -1,6 +1,6 @@
-library(dplyr)
-library(ggplot2)
-library(FactoMineR)
+#library(dplyr)
+#library(ggplot2)
+#library(FactoMineR)
 
 # chargement données
 balea_data <- read.csv2("Data_balea_projetIG4.csv")
@@ -46,3 +46,12 @@ plot_q_e
 ## = = = = = ACPs = = = =  =##
 
 acp_nb <- PCA(balances[c(2, 4)])
+acp_poids_aff_ind <- fviz_pca_ind(acp_nb,
+                                   col.ind = "cos2", 
+                                   gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
+                                   repel = TRUE)
+
+acp_poids_aff_var <- fviz_pca_var(acp_nb,
+                                   col.var = "contrib", 
+                                   gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
+                                   repel = TRUE)
