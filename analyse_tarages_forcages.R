@@ -78,9 +78,9 @@ plot_q_f
 
 ### = = = = ACP = = = = ###
 
-#acp_nb <- PCA(balances[,2:4], quali.sup = ,1)
+acp_nb <- PCA(balances[,2:4], quali.sup = ,1)
 
-#acp_ratios <- PCA(balances[,5:6])
+acp_ratios <- PCA(balances[,5:6])
 
 
 

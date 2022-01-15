@@ -1,6 +1,8 @@
 library(dplyr)
 library(ggplot2)
 library(FactoMineR)
+library(ggpubr)
+library(factoextra)
 
 # chargement données
 balea_data <- read.csv2("Data_balea_projetIG4.csv")
@@ -43,6 +45,29 @@ plot_q_e <- ggplot(balances_erreur_quantiles) +
   geom_line(aes(x = balances_erreur_quantiles$Quantile, y = balances_erreur_quantiles$ErrorPercentage))
 plot_q_e
 
-## = = = = = ACPs = = = =  =##
+## = = = = = ACPs = = = = = ##
 
 acp_nb <- PCA(balances[c(2, 4)])
+
+
+## = = = = = K-means = = = = ##
+
+balancesKm <- balances[c(2, 4)]
+
+set.seed(2811) # ??
+resKm <- kmeans(scale(balancesKm), 4, nstart=25)
+
+balancesKm$Cluster = resKm$cluster
+
+ggplot(balancesKm) +
+  geom_point(aes(x = balancesKm$NbUtilisations, y = balancesKm$ErrorPercentage, 
+                 colour = as.factor(balancesKm$Cluster)))
+
+# fviz_cluster(resKm, data = balancesKm,
+#              palette = c("#f06262", "#cfc4c4","#b0a7a7", "#8cf584"), 
+#              geom = "point",
+#              ellipse.type = "convex", 
+#              ggtheme = theme_bw()
+# )
+
+
