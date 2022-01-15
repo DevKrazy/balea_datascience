@@ -40,4 +40,8 @@ shinyServer(function(input, output) {
   
   output$acp_ratios_ind <- renderPlot(acp_ratios_aff_ind)
   output$acp_ratios_var <- renderPlot(acp_ratios_aff_var)
+  
+  source("analyse_poids.R")
+  output$acp_poids_ind <- renderPlot(acp_poids_aff_ind)
+  output$acp_poids_var <- renderPlot(acp_poids_aff_var)
 })
