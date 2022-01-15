@@ -80,6 +80,9 @@ plot_q_f
 ### = = = = ACP = = = = ###
 
 acp_nb <- PCA(balances[,2:4], quali.sup = ,1)
+
+acp_ratios <- PCA(balances[,5:6])
+
 acp_nb_aff_ind <- fviz_pca_ind(acp_nb,
                        col.ind = "cos2", 
                        gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
@@ -102,7 +105,6 @@ acp_ratios_aff_var <- fviz_pca_var(acp_ratios,
                                gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
                                repel = TRUE     
 )
-
 
 
 

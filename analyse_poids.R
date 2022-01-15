@@ -1,6 +1,8 @@
 library(dplyr)
 library(ggplot2)
 library(FactoMineR)
+library(ggpubr)
+library(factoextra)
 
 # chargement données
 balea_data <- read.csv2("Data_balea_projetIG4.csv")
@@ -43,6 +45,9 @@ plot_q_e <- ggplot(balances_erreur_quantiles) +
   geom_line(aes(x = balances_erreur_quantiles$Quantile, y = balances_erreur_quantiles$ErrorPercentage))
 plot_q_e
 
-## = = = = = ACPs = = = =  =##
+## = = = = = ACPs = = = = = ##
 
 acp_nb <- PCA(balances[c(2, 4)])
+
+
+
