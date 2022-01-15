@@ -17,7 +17,8 @@ dashboardPage(
   dashboardSidebar(
     sidebarMenu(
       menuItem("Accueil", tabName = "home", icon = icon("fas fa-home")),
-      menuItem("Graphiques", tabName = "graphics", icon = icon("far fa-chart-bar"))
+      menuItem("Graphiques", tabName = "graphics", icon = icon("far fa-chart-bar")),
+      menuItem("Tarages et Forçages", tabName = "tarage_forcage", icon = icon("far fa-chart-bar"))
     )
   ),
   dashboardBody(
@@ -38,8 +39,62 @@ dashboardPage(
       ),
       # Second tab content
       tabItem(tabName = "graphics",
-              h2("Some graphics"),
-              box(plotOutput("firstPlot"))
+        h2("Some graphics"),
+        box(plotOutput("firstPlot"))
+      ),
+      
+      tabItem(tabName = "tarage_forcage",
+        h2("Analyse des tarages et des forçages"),
+        fluidRow(
+          box(width = 12,
+            column(width = 8,
+              h3("Graphique du nombre d’utilisation en fonction du nombre de tarage (Balance n°65)"),
+              plotOutput("plotq_t")
+            ),
+            column(width = 4,
+              h3("Obersavtion"),
+              "On remarque un profil plutôt linéaire, ce qui laisse présager que la proportion de tarage par rapport au nombre d’utilisation n’évolue pas avec le temps. Dans le cas où une balance deviendrait plus défectueuse avec le temps on aurait observé un profil se rapprochant de la forme d’une courbe exponentielle."
+            )
+          )
+        ),
+        fluidRow(
+          box(width = 12,
+            column(width = 4,
+              h3("ACP nombre d’utilisation, nombre de tarage et nombre de forçage"),
+              plotOutput("acp_nb_ind"),
+              "Graphique des individus. Coloration en fonction du cos2 (qualité de représentation). Les individus similaires sont groupés ensemble."
+            ),
+            column(width = 4,
+                 h3("Variables - PCA"),
+                 plotOutput("acp_nb_var"),
+                 "Graphique des variables. Coloration en fonction de la contribution des variables. Les variables corrélées positivement sont du même côté du graphique. Les variables corrélées négativement sont sur des côtés opposés du graphique."
+            ),
+            column(width = 4,
+                   h3("Observation"),
+                 "On se rend compte que le nombre de tarages et le nombre de forçages sont assez corrélés (calculer cos(angle_flèches), Seith nous avait dit qu’environ 70% des tarages donnaient lieu à un forçage (recalculer ce pourcentage nous même pour le confirmer ou l’infirmer). On ne peut pas conclure grand chose de cette ACP."
+            )
+          )
+        ),
+        fluidRow(
+          box(width = 12,
+            column(width = 4,
+               
+                   h3("ACP ratio tarage et ratio forcage "),
+                   plotOutput("acp_ratios_ind"),
+                   "Graphique des individus. Coloration en fonction du cos2 (qualité de représentation). Les individus similaires sont groupés ensemble."
+               
+            ),
+            column(width = 4,
+                 h3("Variables - PCA"),
+                 plotOutput("acp_ratios_var"),
+                 "Graphique des variables. Coloration en fonction de la contribution des variables. Les variables corrélées positivement sont du même côté du graphique. Les variables corrélées négativement sont sur des côtés opposés du graphique."
+             ),
+            column(width = 4,
+                 h3("Observation"),
+                "On voit que les 2 ratios sont corrélés (angle 45° donc cos ~ 0,7), pareil que l’ACP du nb d’utilisations, de forçages et de tarages, on ne peut pas en conclure grand chose."
+            )
+          )
+        )
       )
     )
   )
