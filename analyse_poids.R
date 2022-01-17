@@ -1,21 +1,6 @@
-library(dplyr)
-library(ggplot2)
-library(FactoMineR)
-library(ggpubr)
-library(factoextra)
-
-# chargement données
-balea_data <- read.csv2("Data_balea_projetIG4.csv")
-
-balea_data$BalanceId = paste(balea_data$TruckId, balea_data$CorridorNumber, sep="")
-balea_data$TheoriticalTotalWeight = as.double(balea_data$Quantity)*as.double(balea_data$WeightProductTradeUnitUsed)
-balea_data$WeightError = abs(as.double(balea_data$Weight)-balea_data$TheoriticalTotalWeight)
-balea_data$WeightErrorPercentage = round(100*balea_data$WeightError/as.double(balea_data$TheoriticalTotalWeight), 2)
-
-
 # = = = == = =  Pourcentage de mesures à + de 5% d'erreur = = = = = = = ##
 
-balances_erreur_5 <- balea_data %>% filter(balea_data$WeightErrorPercentage >= 5)
+balances_erreur_5 <- balea_data %>% filter(balea_data$WeightRatioErreur >= 5)
 
 nb_mesures <- nrow(balea_data)
 nb_mesures_erreur_5 <- nrow(balances_erreur_5)

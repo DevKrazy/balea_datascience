@@ -1,14 +1,3 @@
-library(dplyr)
-library(ggplot2)
-library(FactoMineR)
-library("factoextra")
-
-# chargement données
-balea_data <- read.csv2("Data_balea_projetIG4.csv")
-# création colonne BalanceId (concaténations des IDs)
-balea_data$BalanceId = paste(balea_data$ï..TruckId, balea_data$CorridorNumber, sep="")
-
-
 # enlève les utilisations de balances qui n'ont pas nécessité de tarage
 balea_data_tarees <- balea_data %>% filter(TARException ==  1)
 # pour chaque BalanceId, compte le nb d'ocurrences de tarages
