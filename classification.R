@@ -72,10 +72,15 @@ balances <- merge(x = balances, y = balances_forcees, by = "BalanceId")
 balances$RatioForcage = 100*balances$NbForcages/balances$NbUtilisations
 
 
+## mets le balanceId en tant que colonne d'indices
+rownames(balances) <- balances$BalanceId
+
+
 
 ## = = = = = ACP = = = = = ##
 
-#acp_nb <- PCA(balances[c(2, 4)])
+acp_nb <- PCA(balances[c(2, 5, 7)])
+
 
 
 

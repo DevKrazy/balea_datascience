@@ -67,19 +67,22 @@ plot_q_f
 
 
 ### = = = = Plot pour une balance = = = = ###
-# balance <- balea_data %>% filter(balea_data$BalanceId == "65")
-# balance <- balance[c("BalanceId", "PickingDate", "TARException")]
-# balance <- balance[order(balance$PickingDate),]
-# balance$TARSum = cumsum(balance$TARException)
-# balance$NumUtilisation = seq.int(nrow(balance)) 
-# 
-# p <- ggplot(balance) +
-#   geom_line(aes(x = balance$NumUtilisation, y = balance$TARSum))
-# p
+balance <- balea_data %>% filter(balea_data$BalanceId == "65")
+balance <- balance[c("BalanceId", "PickingDate", "TARException")]
+balance <- balance[order(balance$PickingDate),]
+balance$TARSum = cumsum(balance$TARException)
+balance$NumUtilisation = seq.int(nrow(balance))
+
+p <- ggplot(balance) +
+  geom_line(aes(x = balance$NumUtilisation, y = balance$TARSum)) +
+  ggtitle("Nombre de tarages en fonction du nombre d'utilisation (balance 65)") +
+  ylab("Nombre de tarages") +
+  xlab("Nombre d'utilisations")
+p
 
 ### = = = = ACP = = = = ###
 
-acp_nb <- PCA(balances[,2:4], quali.sup = ,1)
+acp_nb <- PCA(balances[c(2, 5)], quali.sup = ,1)
 
 acp_ratios <- PCA(balances[,5:6])
 
