@@ -71,6 +71,9 @@ balances <- merge(x = balances, y = balances_forcees, by = "BalanceId")
 ## = = = = = = = = Création colonne RatioForcage = = = = = = ##
 balances$RatioForcage = 100*balances$NbForcages/balances$NbUtilisations
 
+## mets le balanceId en tant que colonne d'indices
+rownames(balances) <- balances$BalanceId
+
 
 
 ## = = = = = ACPs = = = = = ##
@@ -80,6 +83,19 @@ acp_nb <- PCA(balances[c(2, 5, 7)])
 
 # ACP nbUtilisations et ratioErreur (piste qui nous a servi)
 acp_ratios <- PCA(balances[c(2, 4)])
+
+
+## = = = = = quantiles du % d'erreur = = = = = #
+
+# TODO METTRE UNE LIGNE ROUGE SUR QUANTILE D'ORDRE 9
+
+probs_q_e <- seq(0, 1, 1/20) # idée mettre un slider pour gérer qté des quantiles
+values_q_e <- quantile(balances$RatioErreur, probs = probs_q_e)
+balances_erreur_quantiles <- data.frame(Quantile = probs_q_e, RatioErreur = values_q_e)
+
+plot_q_e <- ggplot(balances_erreur_quantiles) +
+  geom_line(aes(x = balances_erreur_quantiles$Quantile, y = balances_erreur_quantiles$RatioErreur))
+plot_q_e
 
 ## = = = = = K-means = = = = ##
 
@@ -97,7 +113,10 @@ ggplot(balancesKm) +
                  colour = as.factor(balancesKm$Cluster)))
 
 ### = = = = Plot pour une balance = = = = ###
-# On ne garde que notre balance (TODO Modifier numBalance pour le connecter au front)
+# On ne garde que notre balance
+
+# TODO Modifier numBalance pour le connecter au front
+
 numBalance <- "66"
 balance <- balea_data %>% filter(balea_data$BalanceId == numBalance)
 balance <- balance[c("BalanceId", "PickingDate", "TARException", "FlagWeightOverriden", "WeightRatioErreur")]
