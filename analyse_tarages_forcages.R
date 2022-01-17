@@ -86,10 +86,9 @@ plot_tarage_balance
 plot_forcage_balance
 plot_erreur_5
 
-
 ### = = = = ACP = = = = ###
 
-acp_nb <- PCA(balances[,2:4], quali.sup = ,1)
+acp_nb <- PCA(balances[c(2, 5)], quali.sup = ,1)
 
 acp_ratios <- PCA(balances[,5:6])
 

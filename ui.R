@@ -109,7 +109,7 @@ dashboardPage(
         fluidRow(
           shinydashboard::box(width = 12,
             column(width = 4,
-               h3("Graphique du nombre d’utilisation en fonction du nombre de tarage (Balance n°65)"),
+               h3("ACP du nombre d’utilisation et pourcentage d’erreur (erreur > 5% du poids théorique)"),
                plotOutput("acp_poids_ind")
             ),
             column(width = 4,
