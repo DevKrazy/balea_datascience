@@ -6,7 +6,7 @@ library("factoextra")
 # chargement données
 balea_data <- read.csv2("Data_balea_projetIG4.csv")
 # création colonne BalanceId (concaténations des IDs)
-balea_data$BalanceId = paste(balea_data$TruckId, balea_data$CorridorNumber, sep="")
+balea_data$BalanceId = paste(balea_data$ï..TruckId, balea_data$CorridorNumber, sep="")
 
 
 # enlève les utilisations de balances qui n'ont pas nécessité de tarage
@@ -67,18 +67,35 @@ plot_q_f
 
 
 ### = = = = Plot pour une balance = = = = ###
-balance <- balea_data %>% filter(balea_data$BalanceId == "65")
-balance <- balance[c("BalanceId", "PickingDate", "TARException")]
+# On ne garde que notre balance (TODO Modifier numBalance pour le connecter au front)
+# On part du principe qu'on a déjà lancé le fichier classification.R 
+# pour avoir toutes les modifications sur le tableau de base
+numBalance <- "66"
+balance <- balea_data %>% filter(balea_data$BalanceId == numBalance)
+balance <- balance[c("BalanceId", "PickingDate", "TARException", "FlagWeightOverriden", "WeightRatioErreur")]
 balance <- balance[order(balance$PickingDate),]
 balance$TARSum = cumsum(balance$TARException)
-balance$NumUtilisation = seq.int(nrow(balance))
+balance$FORCSum = cumsum(balance$FlagWeightOverriden)
+balance$NumUtilisation = seq.int(nrow(balance)) 
+balance$ErrorSup5 <- with(balance, ifelse(WeightRatioErreur >= 5, 1, 0))
+balance$ERRORSum = cumsum(balance$ErrorSup5)
 
-p <- ggplot(balance) +
-  geom_line(aes(x = balance$NumUtilisation, y = balance$TARSum)) +
-  ggtitle("Nombre de tarages en fonction du nombre d'utilisation (balance 65)") +
-  ylab("Nombre de tarages") +
-  xlab("Nombre d'utilisations")
-p
+plot_tarage_balance <- ggplot(balance) +
+  geom_line(aes(x = NumUtilisation, y = TARSum)) + 
+  ylab(paste("Somme du nombre de tarages balance ", numBalance)) + 
+  xlab("Nombre d'utilisation")
+plot_forcage_balance <- ggplot(balance) +
+  geom_line(aes(x = NumUtilisation, y = FORCSum)) + 
+  ylab(paste("Somme du nombre de forçages balance ", numBalance)) + 
+  xlab("Nombre d'utilisation")
+plot_erreur_5 <- ggplot(balance) +
+  geom_line(aes(x = NumUtilisation, y = ERRORSum)) + 
+  ylab(paste("Somme du nombre d'erreur supérieur à 5% balance ", numBalance)) + 
+  xlab("Nombre d'utilisation")
+
+plot_tarage_balance
+plot_forcage_balance
+plot_erreur_5
 
 ### = = = = ACP = = = = ###
 
