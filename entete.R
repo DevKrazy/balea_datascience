@@ -94,7 +94,11 @@ values_q_e <- quantile(balances$RatioErreur, probs = probs_q_e)
 balances_erreur_quantiles <- data.frame(Quantile = probs_q_e, RatioErreur = values_q_e)
 
 plot_q_e <- ggplot(balances_erreur_quantiles) +
-  geom_line(aes(x = balances_erreur_quantiles$Quantile, y = balances_erreur_quantiles$RatioErreur))
+  geom_line(aes(x = balances_erreur_quantiles$Quantile, y = balances_erreur_quantiles$RatioErreur)) +
+  ggtitle("Taux d’erreur en % pour chaque quantile d’ordre 20") +
+  xlab("Quantiles d'ordre 20") +
+  ylab("Pourcentage d'erreur")
+
 plot_q_e
 
 ## = = = = = K-means = = = = ##
