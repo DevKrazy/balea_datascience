@@ -33,15 +33,44 @@ shinyServer(function(input, output) {
   })
   
   
-  source("analyse_tarages_forcages.R")
-  output$plotq_t <- renderPlot(plot_q_t)
+  source("entete.R")
+  output$plot_tarage_balance <- renderPlot(plot_tarage_balance)
+  output$plot_q_e <- renderPlot(plot_q_e)
   output$acp_nb_ind <- renderPlot(acp_nb_aff_ind)
   output$acp_nb_var <- renderPlot(acp_nb_aff_var)
   
   output$acp_ratios_ind <- renderPlot(acp_ratios_aff_ind)
   output$acp_ratios_var <- renderPlot(acp_ratios_aff_var)
   
-  source("analyse_poids.R")
   output$acp_poids_ind <- renderPlot(acp_poids_aff_ind)
   output$acp_poids_var <- renderPlot(acp_poids_aff_var)
+  
+  output$kmeans <- renderPlot(kmeans)
+  
+  output$texte <- renderUI({
+    validate(
+      need(input$numBalance, 'Donnez un numéro de balance valide !'),
+    )
+    
+    classe <- reactive({classe <- input$numBalance})
+    validate(
+      need(is.na(resKm$cluster[classe()]) == FALSE, 'Donnez un numéro de balance valide !'),
+    )
+    if(resKm$cluster[classe()] == 1){
+      "Balances avec un taux d’erreur très important, un nombre d’utilisation relativement bas-modéré. Représenté en rouge sur le graphique"
+    }
+    else if (resKm$cluster[classe()] == 2){
+      "Balances fiables, beaucoup d’utilisation et un taux d’erreur faible. Représenté en vert sur le graphique."
+    }
+    else if (resKm$cluster[classe()] == 3){
+      "Balances peu utilisés avec un faible taux d’erreur, pas réellement analysable. Représenté en bleu sur le grpahique."
+    }
+    else if (resKm$cluster[classe()]== 4){
+      "Balance peu utilisé avec quelques erreurs mais pas suffisamenent d'utilisation pour la classé défectueuse. Représenté en violet sur le graphique."
+    }
+    else{
+      ""
+    }
+  })
+  
 })

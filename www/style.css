@@ -1,3 +1,6 @@
 .main-header *{
   background-color: #465B83 !important;
 }
+
+.shiny-output-error { visibility: hidden; }
+.shiny-output-error:before { visibility: hidden; }

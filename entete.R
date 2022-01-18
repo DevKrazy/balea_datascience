@@ -40,7 +40,6 @@ balances <- merge(x = balances, y = balances_erreur_5, by = "BalanceId")
 balances$RatioErreur = 100*balances$NbErreurs/balances$NbUtilisations
 
 
-
 ## = = = = = = = = Création colonne NbTarages = = = = = = ##
 
 # enlève les utilisations de balances qui n'ont pas nécessité de tarage
@@ -94,8 +93,8 @@ values_q_e <- quantile(balances$RatioErreur, probs = probs_q_e)
 balances_erreur_quantiles <- data.frame(Quantile = probs_q_e, RatioErreur = values_q_e)
 
 plot_q_e <- ggplot(balances_erreur_quantiles) +
-  geom_line(aes(x = balances_erreur_quantiles$Quantile, y = balances_erreur_quantiles$RatioErreur))
-plot_q_e
+  geom_line(aes(x = Quantile, y = RatioErreur)) + 
+  labs(x = "Quantile d'ordre 20", y = "Pourcentage d'erreur")
 
 ## = = = = = K-means = = = = ##
 
@@ -105,13 +104,16 @@ set.seed(123) # ??
 resKm <- kmeans(scale(balancesKm), 4, nstart=25)
 
 
+
 # plot du clustering des k-means
 balancesKm$Cluster = resKm$cluster
 
-ggplot(balancesKm) +
+kmeans <- ggplot(balancesKm) +
   geom_point(aes(x = balancesKm$NbUtilisations, y = balancesKm$RatioErreur,
-                 colour = as.factor(balancesKm$Cluster)))
-
+                 colour = as.factor(balancesKm$Cluster))) + 
+  labs(x = "Nombre d'utilisations", y = "Taux d'erreur", fill = "Classes") + 
+  theme(legend.position = "none") +
+  scale_color_brewer(palette="Set1")
 ### = = = = Plot pour une balance = = = = ###
 # On ne garde que notre balance
 
